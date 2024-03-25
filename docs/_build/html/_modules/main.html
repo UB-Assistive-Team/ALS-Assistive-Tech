@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>main &mdash; ALS Assistive Tech v1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=0ec76b63"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ALS Assistive Tech
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Source</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ALS Assistive Tech</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">main</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for main</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Main module for controlling TV and other functions.</span>
+
+<span class="sd">This module contains functions for controlling TV commands such as power on/off,</span>
+<span class="sd">mute/unmute, volume up/down, and channel up/down. It also provides functions for</span>
+<span class="sd">managing configuration, resetting mouse position, speaking text, and cleaning up</span>
+<span class="sd">resources.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">eel</span>
+<span class="kn">import</span> <span class="nn">serial_com</span>
+<span class="c1">#import rfcontroller # This import should be commented out when testing on a PC</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pyautogui</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="c1">#import pyttsx3</span>
+<span class="kn">from</span> <span class="nn">gtts</span> <span class="kn">import</span> <span class="n">gTTS</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">serial_com</span> <span class="kn">import</span> <span class="n">send_command</span><span class="p">,</span> <span class="n">TVCommand</span>  <span class="c1"># Import the send_command function and TVCommand enum from serial_com.py</span>
+
+<div class="viewcode-block" id="powerOnOff"><a class="viewcode-back" href="../main.html#main.powerOnOff">[docs]</a><span class="k">def</span> <span class="nf">powerOnOff</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send power on command.&quot;&quot;&quot;</span>
+    <span class="n">serial_com</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">serial_com</span><span class="o">.</span><span class="n">TVCommand</span><span class="o">.</span><span class="n">TURN_ON_OFF</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="muteUnmute"><a class="viewcode-back" href="../main.html#main.muteUnmute">[docs]</a><span class="k">def</span> <span class="nf">muteUnmute</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send mute command.&quot;&quot;&quot;</span>
+    <span class="n">serial_com</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">serial_com</span><span class="o">.</span><span class="n">TVCommand</span><span class="o">.</span><span class="n">MUTE_UNMUTE</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="volumeUp"><a class="viewcode-back" href="../main.html#main.volumeUp">[docs]</a><span class="k">def</span> <span class="nf">volumeUp</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send volume up command.&quot;&quot;&quot;</span>
+    <span class="n">serial_com</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">serial_com</span><span class="o">.</span><span class="n">TVCommand</span><span class="o">.</span><span class="n">VOLUME_UP</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="volumeDown"><a class="viewcode-back" href="../main.html#main.volumeDown">[docs]</a><span class="k">def</span> <span class="nf">volumeDown</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send volume down command.&quot;&quot;&quot;</span>
+    <span class="n">serial_com</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">serial_com</span><span class="o">.</span><span class="n">TVCommand</span><span class="o">.</span><span class="n">VOLUME_DOWN</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="channelUp"><a class="viewcode-back" href="../main.html#main.channelUp">[docs]</a><span class="k">def</span> <span class="nf">channelUp</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send channel up command.&quot;&quot;&quot;</span>
+    <span class="n">serial_com</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">serial_com</span><span class="o">.</span><span class="n">TVCommand</span><span class="o">.</span><span class="n">CHANNEL_UP</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="channelDown"><a class="viewcode-back" href="../main.html#main.channelDown">[docs]</a><span class="k">def</span> <span class="nf">channelDown</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send channel down command.&quot;&quot;&quot;</span>
+    <span class="n">serial_com</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">serial_com</span><span class="o">.</span><span class="n">TVCommand</span><span class="o">.</span><span class="n">CHANNEL_DOWN</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+
+<span class="c1">#controller = rfcontroller.RFController() # Comment this out when developing on desktop</span>
+<span class="n">screenWidth</span><span class="p">,</span> <span class="n">screenHeight</span> <span class="o">=</span> <span class="n">pyautogui</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="n">pyautogui</span><span class="o">.</span><span class="n">FAILSAFE</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="togglePlug"><a class="viewcode-back" href="../main.html#main.togglePlug">[docs]</a><span class="k">def</span> <span class="nf">togglePlug</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Toggle plug.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="c1"># For testing on a PC, this line should be uncommented, and the following line should be commented out</span></div>
+    <span class="c1">#controller.sendcode(command) # This line should be commented out when testing on PC, the library is not available on PC</span>
+
+<div class="viewcode-block" id="storeConfig"><a class="viewcode-back" href="../main.html#main.storeConfig">[docs]</a><span class="k">def</span> <span class="nf">storeConfig</span><span class="p">(</span><span class="n">setting</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Store configuration.&quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;config.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">openfile</span><span class="p">:</span>
+    <span class="c1">#with open(&#39;/home/pi/ALS-Assistive-Tech/config.json&#39;, &#39;r&#39;) as openfile:</span>
+        <span class="n">config</span>  <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">openfile</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;config.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writefile</span><span class="p">:</span>
+    <span class="c1">#with open(&#39;/home/pi/ALS-Assistive-Techp/config.json&#39;, &#39;w&#39;) as writefile:</span>
+        <span class="n">config</span><span class="p">[</span><span class="n">setting</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">writefile</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="loadConfig"><a class="viewcode-back" href="../main.html#main.loadConfig">[docs]</a><span class="k">def</span> <span class="nf">loadConfig</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load configuration.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;config.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">openfile</span><span class="p">:</span>
+    <span class="c1">#with open(&#39;/home/pi/ALS-Assistive-Tech/config.json&#39;, &#39;r&#39;) as openfile:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">openfile</span><span class="p">)</span>
+        <span class="n">eel</span><span class="o">.</span><span class="n">loadConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="resetMouse"><a class="viewcode-back" href="../main.html#main.resetMouse">[docs]</a><span class="k">def</span> <span class="nf">resetMouse</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset mouse position.&quot;&quot;&quot;</span>
+    <span class="n">pyautogui</span><span class="o">.</span><span class="n">moveTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">screenHeight</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="speak_from_text"><a class="viewcode-back" href="../main.html#main.speak_from_text">[docs]</a><span class="k">def</span> <span class="nf">speak_from_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Speak from text.&quot;&quot;&quot;</span>
+    <span class="n">speak_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>  <span class="c1"># The function defined above</span></div>
+
+<div class="viewcode-block" id="cleanup"><a class="viewcode-back" href="../main.html#main.cleanup">[docs]</a><span class="k">def</span> <span class="nf">cleanup</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cleanup resources.&quot;&quot;&quot;</span>
+    <span class="n">serial_com</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Serial port closed&quot;</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">eel</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;/home/pi/ALS-Assistive-Tech/web&#39;</span><span class="p">,</span> <span class="n">allowed_extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.js&quot;</span><span class="p">,</span><span class="s2">&quot;.html&quot;</span><span class="p">])</span>
+    <span class="n">resetMouse</span><span class="p">()</span>
+    <span class="n">eel</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="n">cmdline_args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;--start-fullscreen&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Call send_commands() after server starts</span>
+    <span class="n">serial_com</span><span class="o">.</span><span class="n">send_commands</span><span class="p">()</span>
+
+<div class="viewcode-block" id="speak_text"><a class="viewcode-back" href="../main.html#main.speak_text">[docs]</a><span class="k">def</span> <span class="nf">speak_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Speak text.&quot;&quot;&quot;</span>
+    <span class="n">tts</span> <span class="o">=</span> <span class="n">gTTS</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="n">slow</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tts</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;output.mp3&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;mpg123 output.mp3&quot;</span><span class="p">)</span>  <span class="c1"># use &#39;mpg123 output.mp3&#39; or a suitable alternative.</span></div>
+
+<span class="c1"># Example usage:</span>
+<span class="n">speak_text</span><span class="p">(</span><span class="s2">&quot;Hello world, this is a test of Google Text to Speech&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
