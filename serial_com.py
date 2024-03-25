@@ -10,11 +10,11 @@ from enum import Enum
 
 class TVCommand(Enum):
     """Enum class for TV commands."""
-    TURN_ON_OFF  = '1'
-    MUTE_UNMUTE  = '2'
-    VOLUME_UP    = '3' 
-    VOLUME_DOWN  = '4'
-    CHANNEL_UP   = '5'
+    TURN_ON_OFF = '1'
+    MUTE_UNMUTE = '2'
+    VOLUME_UP = '3' 
+    VOLUME_DOWN = '4'
+    CHANNEL_UP = '5'
     CHANNEL_DOWN = '6'
 
 try: 
@@ -29,7 +29,14 @@ except serial.SerialException:
 time.sleep(2)
 
 def send_command(command):
-    """Send a command to the serial port."""
+    """Send a command to the serial port.
+
+    Args:
+        command (str): The command to send.
+
+    Returns:
+        str: The response received from the serial port.
+    """
     # Flush buffers
     ser.flush()
     # Flush a second time to clear buffers
@@ -51,6 +58,3 @@ def send_commands():
     send_command(TVCommand.VOLUME_DOWN.value)
     send_command(TVCommand.CHANNEL_UP.value)
     send_command(TVCommand.CHANNEL_DOWN.value)
-
-# Close serial port, CAUSED ERROR
-#ser.close()
