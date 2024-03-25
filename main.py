@@ -16,26 +16,32 @@ from gtts import gTTS
 import os
 from serial_com import send_command, TVCommand
 
+@eel.expose
 def powerOnOff():
     """Send power on command."""
     serial_com.send_command(serial_com.TVCommand.TURN_ON_OFF.value)
 
+@eel.expose
 def muteUnmute():
     """Send mute command."""
     serial_com.send_command(serial_com.TVCommand.MUTE_UNMUTE.value)
 
+@eel.expose
 def volumeUp():
     """Send volume up command."""
     serial_com.send_command(serial_com.TVCommand.VOLUME_UP.value)
 
+@eel.expose
 def volumeDown():
     """Send volume down command."""
     serial_com.send_command(serial_com.TVCommand.VOLUME_DOWN.value)
 
+@eel.expose
 def channelUp():
     """Send channel up command."""
     serial_com.send_command(serial_com.TVCommand.CHANNEL_UP.value)
 
+@eel.expose
 def channelDown():
     """Send channel down command."""
     serial_com.send_command(serial_com.TVCommand.CHANNEL_DOWN.value)
@@ -43,11 +49,13 @@ def channelDown():
 screenWidth, screenHeight = pyautogui.size()
 pyautogui.FAILSAFE = False
 
+@eel.expose
 def togglePlug(command):
     """Toggle plug."""
     print(command)
     # controller.sendcode(command)
 
+@eel.expose
 def storeConfig(setting, value):
     """Store configuration."""
     config = {}
@@ -57,16 +65,19 @@ def storeConfig(setting, value):
         config[setting] = value
         json.dump(config, writefile)
 
+@eel.expose
 def loadConfig():
     """Load configuration."""
     with open('config.json', 'r') as openfile:
         config = json.load(openfile)
         eel.loadConfig(config)
 
+@eel.expose
 def resetMouse():
     """Reset mouse position."""
     pyautogui.moveTo(0, screenHeight)
 
+@eel.expose
 def speak_from_text(text):
     """Speak from text."""
     speak_text(text)
