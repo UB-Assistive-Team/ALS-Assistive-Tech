@@ -1,6 +1,6 @@
 /*
 -------------------------------------------
-Constants
+            Constants
 -------------------------------------------
 */
 
@@ -11,7 +11,7 @@ const plugSelectOrder = [
     "plug-3",
     "plug-4",
     "plug-5"
-    ,"main-menu-btn"
+    , "main-menu-btn"
 ]
 
 const tvRemoteSelectOrder = [
@@ -31,52 +31,50 @@ const plugSubmenuOrder = [
 ]
 
 const mainMenuOrder = [
-    "plugs",
-    "keyboard",
-    "tv-remote",
-    "settings"
-];
+    "plugs"
+    , "keyboard"
+    , "settings"
+]
 
 const settingsMenuOrder = [
     "single-input"
-    ,"touch-mouse"
-    ,"configure-speed"
-    ,"settings-back"
+    , "touch-mouse"
+    , "configure-speed"
+    , "settings-back"
 ]
 
 const speedMenuOrder = [
     "speed-500"
-    ,"speed-1000"
-    ,"speed-1500"
-    ,"speed-2000"
-    ,"speed-back"
+    , "speed-1000"
+    , "speed-1500"
+    , "speed-2000"
+    , "speed-back"
 
 ]
 
 const keyboardMenuOrder = [
     "keyboard-new-btn"
-    ,"keyboard-menu-btn"
+    , "keyboard-menu-btn"
 ]
 
 let dynamicKeyboardOrder = [] // Used for single input mode
 
 let menuIdMapping = {
-    "plug-select" : plugSelectOrder,
-    "plug-submenu": plugSubmenuOrder,
-    "main-menu": mainMenuOrder,
-    "settings-menu": settingsMenuOrder,
-    "keyboard-menu": keyboardMenuOrder,
-    "dynamic-kb": dynamicKeyboardOrder,
-    "configure-speed-menu": speedMenuOrder,
-    "tv-remote-menu": tvRemoteSelectOrder
-};
+    "plug-select": plugSelectOrder,
+    "plug-submenu": plugSubmenuOrder
+    , "main-menu": mainMenuOrder
+    , "settings-menu": settingsMenuOrder
+    , "keyboard-menu": keyboardMenuOrder
+    , "dynamic-kb": dynamicKeyboardOrder
+    , "configure-speed-menu": speedMenuOrder
+}
 
 let plugLabels = {
-    "1" : "Plug 1",
-    "2" : "PLug 2",
-    "3" : "Plug 3",
-    "4" : "Plug 4",
-    "5" : "Plug 5"
+    "1": "Plug 1",
+    "2": "PLug 2",
+    "3": "Plug 3",
+    "4": "Plug 4",
+    "5": "Plug 5"
 }
 
 const tvRemoteLabels = {
@@ -89,9 +87,59 @@ const tvRemoteLabels = {
 };
 
 /*
----------------------------------------
-Global Vars
----------------------------------------
+_____________________________________________________________________________________________________
+                                            MAIN MENU CONSTANTS
+_____________________________________________________________________________________________________
+*/
+const menuContainer = document.getElementById('main-menu');
+const menuItems = menuContainer.querySelectorAll('.button-text-speech,.button-TV-controls,.button-music,.button-outlet,.button-settings');
+/*
+_____________________________________________________________________________________________________
+                                            T2S/KEYBOARD CONSTANTS
+_____________________________________________________________________________________________________
+*/
+const t2sContainer = document.getElementById('text-2-speech');
+const t2sItems = t2sContainer.querySelectorAll('.button-yes,.button-no,.button-starts-with,.button-ask-something,.button-large,.phrase-text,.button-TV-controls,.button-music,.button-outlet,.button-settings,.button-main-menu');
+
+const keyboardContainer = document.getElementById('text-2-speech');
+const keyboardItems = keyboardContainer.querySelectorAll('.prediction,.prediction-2,.prediction-3,.key-mini-space,.key-go-back,.key-q,.key-w,.key-e,.key-r,.key-t,.key-y,.key-u,.key-i,.key-o,.key-p,.key-auto,.key-a,.key-s,.key-d,.key-f,.key-g,.key-h,.key-j,.key-k,.key-l,.key-z,.key-x,.key-c,.key-v,.key-b,.key-n,.key-m,.key-backspace,.key-auto-2,.key-00,.key,.key-2,.key-3,.key-4,.key-5,.key-6,.key-7,.key-8,.key-9,.key-speak-it,.key-new-phrase');
+
+
+/**
+___________________________________________________________________________________________________
+                                        TV CONTROL CONSTANTS
+___________________________________________________________________________________________________
+ */
+const tvContainer = document.getElementById('tv-control-menu');
+const tvItems = tvContainer.querySelectorAll('.button-main-menu,.button-settings,.button-outlet,.button-music,.button-text-speech,.button-mute-ON-OFF,.button-volume-DOWN,.button-volume-UP,.button-channel-DOWN,.button-channel-UP,.button-power-ON-OFF');
+/*
+/*
+___________________________________________________________________________________________________
+                                        MUSIC CONTROL CONSTANTS
+___________________________________________________________________________________________________
+*/
+const musicContainer = document.getElementById('music-menu');
+const musicItems = musicContainer.querySelectorAll('.button-main-menu,.button-settings,.button-outlet,.button-TV-controls,.button-text-speech,.button-skip-song,.button-PAUSE-PLAY,.button-previous-song,.button-classical,.button-christian');
+/*
+/*
+____________________________________________________________________________________________________________________
+                                        OUTLET CONTROL CONSTANTS
+____________________________________________________________________________________________________________________
+*/
+const outletContainer = document.getElementById('outlet-menu');
+const outletItems = outletContainer.querySelectorAll('.button-main-menu,.button-settings,.button-TV-controls,.button-music,.button-text-speech,.button-plug-ON-OFF-5,.button-plug-ON-OFF-4,.button-plug-ON-OFF-1,.button-plug-ON-OFF-2,.button-plug-ON-OFF-3,.button-all-plugs-ON');
+
+/*
+_____________________________________________________________________________________________________________________
+                                        SETTINGS CONTROL CONSTANTS
+_____________________________________________________________________________________________________________________
+*/
+const settingsContainer = document.getElementById('settings-page');
+const settingsItems = settingsContainer.querySelectorAll('.switch-speed-sec,.switch-speed-sec-2,.switch-speed-sec-3,.switch-speed-sec-4,.switch-speed-sec-5,.switch-speed-sec-6,.switch-speed-sec-7,.switch-speed-sec-8,.button-go-back');
+/*
+____________________________________________________________________________________________________________________
+            Global Vars
+____________________________________________________________________________________________________________________
 */
 let singleInputMode = true
 var selectedIndex = -1
@@ -99,40 +147,15 @@ var selectedMenuOrder
 var previousElement
 var previousColor
 var cycleTimeout
-var cycleTime =  1000  //2000
+var cycleTime = 500  //2000
 
+/*
+--------------------------------------------------
+                INITIALIZATION
+--------------------------------------------------
+*/
 function init() {
-    // setTime();
     eel.loadConfig()
-    for(button of document.getElementsByTagName('button')){
-        // button.addEventListener('click', resetMouse) // Changed to pointerdown event for change
-        button.addEventListener('pointerdown', resetMouse)
-    }
-    if (singleInputMode) {
-        // document.body.onclick = e => accessibilityMouseClick() // Chnged to pointerdown event for Jane
-        document.body.onpointerdown = e => accessibilityMouseClick(e)
-        selectedMenuOrder = mainMenuOrder;
-        resetCycle('main-menu')
-    }
-}
-
-function setTime() {
-    const currTime = new Date();
-    let hr = currTime.getHours();
-    let min = currTime.getMinutes();
-    let amPm = "AM"
-    if (min < 10) {
-        min = "0" + min;
-    }
-    if (hr >= 12) {
-        hr = hr % 12;
-        amPm = "PM";
-    }
-    if (hr == 0) {
-        hr = 12;
-    }
-    document.getElementById("time").innerHTML = "<h2>" + hr + ":" + min + " " + amPm + "</h2>";
-    setTimeout(setTime, 1000);
 }
 
 function resetMouse(event){
@@ -140,54 +163,64 @@ function resetMouse(event){
     eel.resetMouse()
 }
 
-/*
-----------------------------------------------
-Menu Control Functions
-----------------------------------------------
-*/
 
-const changeMenu = (e, newMenuID) => {
-    if (e != undefined) e.stopPropagation()
-    let currentMenu = document.getElementById(e.currentTarget.id)
-                              .parentElement
-    let newMenu = document.getElementById(newMenuID)
-
-    if (singleInputMode) resetCycle(newMenuID)
-
-    currentMenu.style.visibility = 'hidden'
-    newMenu.style.visibility = 'visible'
-}
+//default to main menu container and items
+let currentContainer = menuContainer;
+let currentItems = menuItems;
 
 function openSubmenu(event, supermenuId, submenuId) {
     if (event != undefined) event.stopPropagation();
-    let supermenu = document.getElementById(supermenuId)
-    let submenu = document.getElementById(submenuId)
+    let supermenu = document.getElementById(supermenuId);
+    let submenu = document.getElementById(submenuId);
 
-    if (singleInputMode) resetCycle(submenuId)
+    if (supermenu && submenu) {
+        supermenu.style.display = 'none'; // Hide the supermenu
+        submenu.style.display = 'block'; // Show the submenu
 
-    supermenu.style.visibility = 'hidden'
-    submenu.style.visibility = 'visible'
+        if (submenuId === 'main-menu') {
+            currentContainer = menuContainer;
+            currentItems = menuItems;
+        }
+        if (submenuId === 'text-2-speech') {
+            currentContainer = t2sContainer;
+            currentItems = t2sItems;
+        }
+        if (submenuId === 'tv-control-menu') {
+            currentContainer = tvContainer;
+            currentItems = tvItems;
+        }
+        if (submenuId === 'music-menu') {
+            currentContainer = musicContainer;
+            currentItems = musicItems;
+        }
+        if(submenuId === 'outlet-menu'){
+            currentContainer = outletContainer;
+            currentItems = outletItems;
+        }
+        if(submenuId === 'settings-page'){
+            currentContainer = settingsContainer;
+            currentItems = settingsItems;
+        }
+    }
+    const keyboardButton = document.querySelector('.phrase-text'); // If there's only one keyboard button
+    if (keyboardButton) {
+        keyboardButton.addEventListener('click', function () {
+            currentContainer = keyboardContainer;
+            currentItems = keyboardItems;
+            item.style.boxShadow = '';
+            
+        });
+    }
+    const backButton = document.querySelector('.key-go-back');//for back button
+    if (backButton) {
+        backButton.addEventListener('click', function () {
+            currentContainer = t2sContainer;
+            currentItems = t2sItems;
+            item.style.boxShadow = '';
+        });
+    }
 }
 
-function closeSubmenu(event, supermenuId, submenuId) {
-    if (event != undefined) event.stopPropagation();
-    let supermenu = document.getElementById(supermenuId)
-    let submenu = document.getElementById(submenuId)
-    
-    if (singleInputMode) resetCycle(supermenuId)
-    
-    submenu.style.visibility = 'hidden'
-    supermenu.style.visibility = 'visible'
-}
-
-function openPlugSubmenu(event, plugLabel) {
-    let titleElement = document.getElementById('plug-submenu-title')
-    titleElement.innerHTML = plugLabel == 'all' ? 'All Plugs' : plugLabels[plugLabel]
-    titleElement.parentElement.setAttribute('plug-label', plugLabel)
-
-    openSubmenu(event, 'plug-select', 'plug-submenu')
-    
-}
 
 
 /*
@@ -260,274 +293,144 @@ channelDownButton.addEventListener("click", channelDown);
 
 /*
 --------------------------------------------------
-Single Input Mode Functions
+        Input Mode Functions
 --------------------------------------------------
 */
 
-const toggleInputMode = (e, mode) => {
-    if (mode == 'on') {
-        singleInputMode = true
-        // document.body.onclick = accessibilityMouseClick // Changed to on mouse down for Jane
-        document.body.onpointerdown = accessibilityMouseClick
-    } else {
-        singleInputMode = false
-        if (cycleTimeout != null) previousElement.style.backgroundColor = previousColor
-        // document.body.onclick = null
-        document.body.pointerdown = null
-        clearTimeout(cycleTimeout)
-    }
-    changeMenu(e, 'main-menu')
-}
-
-
-const resetCycle = (menuId) => {
-    selectedIndex = -1
-    selectedMenuOrder = menuIdMapping[menuId]
-    clearTimeout(cycleTimeout)
-    cycleSelection()
-}
-
-
-function accessibilityMouseClick(e) {
-    if (e != undefined) e.stopPropagation()
-    if (singleInputMode) {  // Something keeps reseting body.click to accessibilityMouseClick, check to fix error
-        // document.body.onclick = e => {} // Changed to onpointerdown event for Jane
-        document.body.onpointerdown = e => {}
-        selectedElement = document.getElementById(selectedMenuOrder[selectedIndex])
-        // selectedElement.click(); // Changed to pointerdown for Jane
-        selectedElement.onpointerdown()
-        // document.body.onclick = e => accessibilityMouseClick() // Changed to onpointerdown event for jane
-        document.body.onpointerdown = e => accessibilityMouseClick()
-    }
-}
-
-function cycleSelection() {
-    if (previousElement != null) previousElement.style.backgroundColor = previousColor;
-    selectedIndex = (selectedIndex + 1) % selectedMenuOrder.length
-    var hoveredElement = document.getElementById(selectedMenuOrder[selectedIndex])
-    previousElement = hoveredElement
-    previousColor = previousElement.style.backgroundColor;
-    hoveredElement.style.backgroundColor = "orange";
-    // Handle Hover Element Highlighting
-    // console.log(selectedMenuOrder[selectedIndex])
-    cycleTimeout = setTimeout(cycleSelection, cycleTime)
-}
-
-function togglePlug(e, state) {
-    let plugId = document.getElementById('plug-submenu').getAttribute('plug-label')
-    eel.togglePlug(plugId + state)
-    let statusEl = document.getElementById("status-" + plugId)
-    if (state == 'on') {
-        // Toggle Power Indicator On
-    }
-    else {
-        // Toggle Power Indicator Off
-    }
-    closeSubmenu(e, 'plug-select', 'plug-submenu')
-}
-
-/*
---------------------------------------------------
-Keyboard Globals
---------------------------------------------------
-*/
-let msgHistory = {
-    "topRow": ""
-    ,"middleRow": ""
-    ,"editRow": ""
-}
-
-const msgElements = {
-    "topRow": document.getElementById("text-string-top")
-    ,"middleRow": document.getElementById("text-string-middle")
-    ,"editRow": document.getElementById("text-string-bottom")
-}
-
-let alphaKeyboardInnerHTML = `
-<div id="keyboard-row-1" class="keyboard-row alpha-keyboard-row">
-    <button id="done-key"       class="keyboard-button alpha-keyboard" onpointerdown="endNewMessage(event)">DONE</button>    
-    <button id="space-key"      class="keyboard-button alpha-keyboard" value=" " onpointerdown="updateEditString(event, this.value)">SPACE</button>    
-    <button id="delete-key"     class="keyboard-button alpha-keyboard" value="del" onpointerdown="updateEditString(event, this.value)">BKSP</button>
-    <button id="num-alpha-key"  class="keyboard-button alpha-keyboard" value="num" onpointerdown="changeAlphanumericMode(event, this.value)">NUM</button>
-</div>
-<div id="keyboard-row-2" class="keyboard-row alpha-keyboard-row">
-    <button id="A-key" class="keyboard-button alpha-key" value="A" onpointerdown="updateEditString(event, this.value)">A</button>
-    <button id="B-key" class="keyboard-button alpha-key" value="B" onpointerdown="updateEditString(event, this.value)">B</button>
-    <button id="C-key" class="keyboard-button alpha-key" value="C" onpointerdown="updateEditString(event, this.value)">C</button>
-    <button id="D-key" class="keyboard-button alpha-key" value="D" onpointerdown="updateEditString(event, this.value)">D</button>
-</div>
-<div id="keyboard-row-3" class="keyboard-row alpha-keyboard-row">
-    <button id="E-key" class="keyboard-button alpha-key" value="E" onpointerdown="updateEditString(event, this.value)">E</button>
-    <button id="F-key" class="keyboard-button alpha-key" value="F" onpointerdown="updateEditString(event, this.value)">F</button>
-    <button id="G-key" class="keyboard-button alpha-key" value="G" onpointerdown="updateEditString(event, this.value)">G</button>
-    <button id="H-key" class="keyboard-button alpha-key" value="H" onpointerdown="updateEditString(event, this.value)">H</button>
-</div>
-<div id="keyboard-row-4" class="keyboard-row alpha-keyboard-row">
-    <button id="I-key" class="keyboard-button alpha-key" value="I" onpointerdown="updateEditString(event, this.value)">I</button>
-    <button id="J-key" class="keyboard-button alpha-key" value="J" onpointerdown="updateEditString(event, this.value)">J</button>
-    <button id="K-key" class="keyboard-button alpha-key" value="K" onpointerdown="updateEditString(event, this.value)">K</button>
-    <button id="L-key" class="keyboard-button alpha-key" value="L" onpointerdown="updateEditString(event, this.value)">L</button>
-</div>
-<div id="keyboard-row-5" class="keyboard-row alpha-keyboard-row">
-    <button id="M-key" class="keyboard-button alpha-key" value="M" onpointerdown="updateEditString(event, this.value)">M</button>
-    <button id="N-key" class="keyboard-button alpha-key" value="N" onpointerdown="updateEditString(event, this.value)">N</button>
-    <button id="O-key" class="keyboard-button alpha-key" value="O" onpointerdown="updateEditString(event, this.value)">O</button>
-    <button id="P-key" class="keyboard-button alpha-key" value="P" onpointerdown="updateEditString(event, this.value)">P</button>
-</div>
-<div id="keyboard-row-6" class="keyboard-row alpha-keyboard-row">
-    <button id="Q-key" class="keyboard-button alpha-key" value="Q" onpointerdown="updateEditString(event, this.value)">Q</button>
-    <button id="R-key" class="keyboard-button alpha-key" value="R" onpointerdown="updateEditString(event, this.value)">R</button>
-    <button id="S-key" class="keyboard-button alpha-key" value="S" onpointerdown="updateEditString(event, this.value)">S</button>
-    <button id="T-key" class="keyboard-button alpha-key" value="T" onpointerdown="updateEditString(event, this.value)">T</button>
-</div>
-<div id="keyboard-row-7" class="keyboard-row alpha-keyboard-row">
-    <button id="U-key" class="keyboard-button alpha-key" value="U" onpointerdown="updateEditString(event, this.value)">U</button>
-    <button id="V-key" class="keyboard-button alpha-key" value="V" onpointerdown="updateEditString(event, this.value)">V</button>
-    <button id="W-key" class="keyboard-button alpha-key" value="W" onpointerdown="updateEditString(event, this.value)">W</button>
-    <button id="X-key" class="keyboard-button alpha-key" value="X" onpointerdown="updateEditString(event, this.value)">X</button>
-</div>
-<div id="keyboard-row-8" class="keyboard-row alpha-keyboard-row">
-    <button id="Y-key" class="keyboard-button alpha-key" value="Y" onpointerdown="updateEditString(event, this.value)">Y</button>
-    <button id="Z-key" class="keyboard-button alpha-key" value="Z" onpointerdown="updateEditString(event, this.value)">Z</button>
-    <button id="period-key"      class="keyboard-button" value="." onpointerdown="updateEditString(event, this.value)">.</button>
-    <button id="question-mark-key"  class="keyboard-button" value="?" onpointerdown="updateEditString(event, this.value)">?</button>
-</div>
-`
-
-let numericKeyboardInnerHTML = `
-<div id="keyboard-row-1" class="keyboard-row num-keyboard-row">
-    <button id="done-key"       class="keyboard-button alpha-keyboard" onpointerdown="endNewMessage(event)">DONE</button>    
-    <button id="space-key"      class="keyboard-button alpha-keyboard" value=" " onpointerdown="updateEditString(event, this.value)">SPACE</button>    
-    <button id="delete-key"     class="keyboard-button alpha-keyboard" value="del" onpointerdown="updateEditString(event, this.value)">BKSP</button>
-    <button id="num-alpha-key"  class="keyboard-button alpha-keyboard" value="alpha" onpointerdown="changeAlphanumericMode(event, this.value)">ALPHA</button>
-</div>
-<div id="keyboard-row-2" class="keyboard-row num-keyboard-row">
-    <button id="1-key" class="keyboard-button alpha-key" value="1" onpointerdown="updateEditString(event, this.value)">1</button>
-    <button id="2-key" class="keyboard-button alpha-key" value="2" onpointerdown="updateEditString(event, this.value)">2</button>
-    <button id="3-key" class="keyboard-button alpha-key" value="3" onpointerdown="updateEditString(event, this.value)">3</button>
-    <button id="4-key" class="keyboard-button alpha-key" value="4" onpointerdown="updateEditString(event, this.value)">4</button>
-</div>
-<div id="keyboard-row-3" class="keyboard-row num-keyboard-row">
-    <button id="5-key" class="keyboard-button alpha-key" value="5" onpointerdown="updateEditString(event, this.value)">5</button>
-    <button id="6-key" class="keyboard-button alpha-key" value="6" onpointerdown="updateEditString(event, this.value)">6</button>
-    <button id="7-key" class="keyboard-button alpha-key" value="7" onpointerdown="updateEditString(event, this.value)">7</button>
-    <button id="8-key" class="keyboard-button alpha-key" value="8" onpointerdown="updateEditString(event, this.value)">8</button>
-</div>
-<div id="keyboard-row-4" class="keyboard-row num-keyboard-row">
-    <button id="9-key" class="keyboard-button alpha-key" value="9" onpointerdown="updateEditString(event, this.value)">9</button>
-    <button id="0-key" class="keyboard-button alpha-key" value="0" onpointerdown="updateEditString(event, this.value)">0</button>
-    <button id=".-key" class="keyboard-button alpha-key" value="." onpointerdown="updateEditString(event, this.value)">.</button>
-    <button id="$-key" class="keyboard-button alpha-key" value="$" onpointerdown="updateEditString(event, this.value)">$</button>
-</div>
-<div id="keyboard-row-5" class="keyboard-row num-keyboard-row">
-<button id="comma-key" class="keyboard-button alpha-key" value="," onpointerdown="updateEditString(event, this.value)">,</button>
-<button id="colon-key" class="keyboard-button alpha-key" value=":" onpointerdown="updateEditString(event, this.value)">:</button>
-    <button id="AM-key" class="keyboard-button alpha-key" value="AM" onpointerdown="updateEditString(event, this.value)">AM</button>
-    <button id="PM-key" class="keyboard-button alpha-key" value="PM" onpointerdown="updateEditString(event, this.value)">PM</button>
-</div> 
-`
-
-let keyboardSuperMenuInnerHTML =`
-<button id="keyboard-new-btn"  class="menu-button" onpointerdown="startNewMessage(event)">NEW</button>
-<button id="keyboard-menu-btn" class="menu-button" onpointerdown="closeSubmenu(event, 'main-menu', 'keyboard-menu')">MENU</button>
-`
-
-let kbAttachPoint = document.getElementById('keyboard-attach-point')
-let editString = ""
-let charLimit = 30
-const positionIndicator = "|"
-
-/*
---------------------------------------------------
-Keyboard Functions
---------------------------------------------------
-*/
-
-const updateEditRowDisplay = () => {
-    msgElements["editRow"].innerText  =  editString + positionIndicator
-}
-
-const startNewMessage = (e) => {
-    resetMouse(e)
-    // Update the message history and clear row that will be edited.
-    msgElements["topRow"].innerText    = msgElements["middleRow"].innerText
-    msgElements["middleRow"].innerText = msgElements["editRow"].innerText
-    
-    editString = "" // Clear the string that will be modified by keypresses
-    updateEditRowDisplay()
- 
-    // Show keyboard
-    kbAttachPoint.innerHTML = alphaKeyboardInnerHTML
-    // setKeyboardRowCycle() // Used with grid select keyboard
-    janesKeyboardSelection()
-}
-
-
-const endNewMessage = (e) => {
-    if (e != undefined) e.stopPropagation()
-    resetMouse(e)
-
-    // Update the message strings in memory and call eel function to save messge history.
-    msgHistory["topRow"]    = msgElements["topRow"].innerText
-    msgHistory["middleRow"] = msgElements["middleRow"].innerText
-    msgHistory["editRow"]   = editString
-
-    // Remove the position indicator
-    msgElements["editRow"].innerText  =  editString
-
-    // Call eel update function when available
-
-    kbAttachPoint.innerHTML = keyboardSuperMenuInnerHTML
-    resetCycle("keyboard-menu")
-}
-
-const updateEditString = (e,char) => {
-    if (e != undefined) e.stopPropagation()
-    resetMouse(e)
-    if (char != 'del') {
-        editString += char
-        if (editString.length >= charLimit){
-            var splitter = editString.indexOf(' ') >=0 ? editString.lastIndexOf(' '): 44
-            var spillover = editString.substring(splitter)
-            editString = editString.substring(0, splitter)
-            endNewMessage(e)
-            startNewMessage()
-            editString = spillover
+document.addEventListener('DOMContentLoaded', function () {
+    let cycleTimeout;
+    let currentIndex = 0;
+    let cycling = false;
+     
+    const highlightItem = (index) => {
+        // First, remove the yellow glow from all current items
+        currentItems.forEach(item => {
+            item.style.boxShadow = ''; // Remove any existing glow effect
+        });
+        // Then, apply a yellow glow to the current item
+        const currentItem = currentItems[index];
+        if (currentItem) {
+            currentItem.style.boxShadow = '0 0 30px purple'; // Apply a yellow glow effect
         }
-    } else {
-        if (editString.length > 0) editString = editString.slice(0, -1)
-    }
- 
-    updateEditRowDisplay()
-    resetCycle('dynamic-kb')
-    // setKeyboardRowCycle() // Used with grid select keyboard
-}
+    };
 
-const changeAlphanumericMode = (e, mode) => {
-    if (e != undefined) e.stopPropagation()
-    resetMouse(e)
-    if (mode == 'num') {
-        kbAttachPoint.innerHTML = numericKeyboardInnerHTML
-    } else if (mode == 'alpha') {
-        kbAttachPoint.innerHTML = alphaKeyboardInnerHTML
+    const cycleItems = () => {
+        if (!cycling) return;
+        highlightItem(currentIndex);
+        currentIndex = (currentIndex + 1) % currentItems.length; // Use currentItems for length
+        cycleTimeout = setTimeout(cycleItems, cycleTime);
+    };
+
+    // Use a more generic event listener that checks if the currentContainer contains the event target
+    document.addEventListener('pointerdown', function (event) {
+        if (currentContainer.contains(event.target)) {
+            cycling = true;
+            cycleItems();
+        }
+    });
+
+    document.addEventListener('pointerup', function () {
+        if (!cycling) return;
+        clearTimeout(cycleTimeout);
+        cycling = false;
+        const selectedItemIndex = (currentIndex === 0 ? currentItems.length : currentIndex) - 1;
+        currentItems[selectedItemIndex].click(); // Click the highlighted item using currentItems
+        currentIndex = 0;
+    });
+});
+/*
+--------------------------------------------------
+            RF CONTROLLER CODE
+--------------------------------------------------
+*/
+let plugState1 = 0;
+let plugState2 = 0;
+let plugState3 = 0;
+let plugState4 = 0;
+let plugState5 = 0;
+let plugStateAll = 0;
+
+function toggleAll(){
+    if(plugStateAll === 0){
+        plugStateAll = 1;
+        console.log("all on");
+        eel.togglePlug("allon");
     }
-    // setKeyboardRowCycle() // Use with grid select keyboard
-    janesKeyboardSelection()
+    else{
+        plugStateAll = 0;
+        console.log("all off");
+        eel.togglePlug('alloff')
+    }
 }
+function togglePlug1(){
+    if(plugState1 === 0){
+        plugState1 = 1;
+        console.log("1 on");
+        eel.togglePlug("1on");
+    }
+    else{
+        plugState1 = 0;
+        console.log("1 off");
+        eel.togglePlug('1off')
+    }
+}
+function togglePlug2(){
+    if(plugState2 === 0){
+        plugState2 = 1;
+        console.log("2 on");
+        eel.togglePlug("2on");
+    }
+    else{
+        plugState2 = 0;
+        console.log("2 off");
+        eel.togglePlug('2off')
+    }
+}
+function togglePlug3(){
+    if(plugState3 === 0){
+        plugState3 = 1;
+        console.log("3 on");
+        eel.togglePlug("3on");
+    }
+    else{
+        plugState3 = 0;
+        console.log("3 off");
+        eel.togglePlug('3off')
+    }
+}
+function togglePlug4(){
+    if(plugState4 === 0){
+        plugState4 = 1;
+        console.log("on");
+        eel.togglePlug("4on");
+    }
+    else{
+        plugState4 = 0;
+        console.log("off");
+        eel.togglePlug('4off')
+    }
+}
+function togglePlug5(){
+    if(plugState5 === 0){
+        plugState5 = 1;
+        console.log("on");
+        eel.togglePlug("5on");
+    }
+    else{
+        plugState5 = 0;
+        console.log("off");
+        eel.togglePlug('5off')
+    }
+}
+/*
+--------------------------------------------------
+            Keyboard Functions
+--------------------------------------------------
+*/
+
 
 // janesKeyboardSelection is custom to a request by Jane and her caretakers. This goes through all
 // keys one at a time to select the button needed.
-const janesKeyboardSelection = () => {
-    if (singleInputMode) {
-        const newArr = document.getElementsByClassName('keyboard-button')
-        dynamicKeyboardOrder = []
-        for (let ele of newArr) {
-            dynamicKeyboardOrder.push(ele.id)
-        }
-        menuIdMapping['dynamic-kb'] = dynamicKeyboardOrder
-        resetCycle('dynamic-kb')
-    }
-}
 
 
 // The following two functions (setKeyboardRowCycle and setKeyboardButtonCycle) allow the device
@@ -554,19 +457,337 @@ const setKeyboardButtonCycle = (ele) => {
     menuIdMapping["dynamic-kb"] = dynamicKeyboardOrder
     resetCycle("dynamic-kb")
 }
+/*
+_________________________________________________________________________________________________
+                                TEXT-2-SPEECH FUNCTIONS
+_________________________________________________________________________________________________
+*/
+class TrieNode {
+    constructor() {
+      this.children = new Map();
+      this.wordCount = 0;
+      this.isEndOfWord = false;
+    }
+  }
+  
+  class Trie {
+    constructor() {
+      this.root = new TrieNode();
+    }
+  
+    insert(word, count) {
+      let node = this.root;
+      for (const char of word) {
+        if (!node.children.has(char)) {
+          node.children.set(char, new TrieNode());
+        }
+        node = node.children.get(char);
+      }
+      node.isEndOfWord = true;
+      node.wordCount = count;
+    }
+  
+    search(prefix) {
+      let node = this.root;
+      for (const char of prefix) {
+        if (!node.children.has(char)) {
+          return [];
+        }
+        node = node.children.get(char);
+      }
+      return this.getPredictiveText(node, prefix);
+    }
+  
+    getPredictiveText(node, prefix) {
+      const suggestions = [];
+      const queue = [[node, prefix]];
+  
+      while (queue.length > 0) {
+        const [currentNode, currentPrefix] = queue.shift();
+  
+        if (currentNode.isEndOfWord) {
+          suggestions.push({ word: currentPrefix, count: currentNode.wordCount });
+        }
+  
+        for (const [char, child] of currentNode.children) {
+          queue.push([child, currentPrefix + char]);
+        }
+      }
+  
+      return suggestions.sort((a, b) => b.count - a.count);
+    }
+  }
+  
 
+  async function addToPhrase(char) {
+    var textBox = document.getElementById("phrase-text-box");
+
+    if (char === ' ') {
+        textBox.innerHTML += '&nbsp;'; // Add a non-breaking space for visual consistency
+    } 
+    else {
+        // Append the character or replace the last word with the new one if longer input
+        if (char.length > 1) {
+            let words = textBox.innerText.split(/\s+/);
+            words.pop(); // Remove the last word
+            words.push(char); // Add the new word
+            textBox.innerText = words.join(" ") + " "; // Reconstruct the text and add a space for further typing
+        } else {
+            textBox.innerText += char;
+        }
+
+        // Get last word from the textBox for prediction
+        let words = textBox.innerText.trim().split(/\s+/);
+        let lastWord = words.pop(); // The last word for prediction
+
+        console.log("Current content:", textBox.innerText.toLowerCase());
+        console.log("Last word for prediction:", lastWord.toLowerCase());
+
+        try {
+            const predictions = await predictiveText(lastWord.toLowerCase());
+            console.log(predictions);
+
+            const prediction1 = document.getElementById("prediction1");
+            const prediction2 = document.getElementById("prediction2");
+            const prediction3 = document.getElementById("prediction3");
+
+            if (predictions.length >= 3) {
+                prediction1.innerText = predictions[0].toUpperCase();
+                prediction2.innerText = predictions[1].toUpperCase();
+                prediction3.innerText = predictions[2].toUpperCase();
+            }
+            else if (predictions.length == 2) {
+            prediction1.innerText = predictions[0].toUpperCase();
+            prediction2.innerText = predictions[1].toUpperCase();
+            prediction3.innerText = "";
+            }
+            else if (predictions.length == 2) {
+            prediction1.innerText = predictions[0].toUpperCase();
+            prediction2.innerText = "";
+            prediction3.innerText = "";
+            } 
+            else {
+            prediction1.innerText = "";
+            prediction2.innerText = "";
+            prediction3.innerText = "";
+            }
+        } catch (error) {
+            console.error("Prediction error:", error);
+        }
+    }
+}
+
+eel.expose(addToPhrase);//expose to eel
+
+function deleteChar() {
+    var textBox = document.getElementById("phrase-text-box");
+    var currentText = textBox.innerText;
+    textBox.innerText = currentText.slice(0, -1); //removes last char
+}
+//eel.expose(deleteChar);
+async function predictiveText(input) {
+    try {
+        // Fetch the words.txt file
+        const response = await fetch('words.txt');
+        if (!response.ok) {
+            throw new Error('Failed to fetch file contents');
+        }
+        const fileContents = await response.text();
+
+        // Split file contents into lines
+        const lines = fileContents.split('\n');
+
+        // Build Trie structure from file contents
+        const trie = new Trie();
+        for (const line of lines) {
+            const [word, count] = line.split(" ");
+            trie.insert(word, parseInt(count));
+        }
+
+        // Perform search and return suggestions
+        const suggestions = trie.search(input).slice(0, 3).map(({ word }) => word);
+        return suggestions;
+    } catch (error) {
+        throw new Error('Failed to retrieve predictive text suggestions: ' + error.message);
+    }
+}
+
+function newPhrase() {
+    var textBox = document.getElementById("phrase-text-box");
+    
+    // STILL NEED TO IMPLEMENT BIASING INTO WORDS.TXT
+    
+    textBox.innerText = ''; //clears the string;
+
+    // clear the prediction boxes 
+    const prediction1 = document.getElementById("prediction1");
+    const prediction2 = document.getElementById("prediction2");
+    const prediction3 = document.getElementById("prediction3");
+    
+    prediction1.innerText = ""; 
+    prediction2.innerText = ""; 
+    prediction3.innerText = ""; 
+
+}
+//eel.expose(newPhrase);
+
+function speakYes() {
+    eel.speak_yes();  // Call the Python function
+}
+function speakNo() {
+    eel.speak_no();
+}
+function speakItStarts() {
+    eel.speak_it_starts();
+}
+function speakCanIAsk() {
+    eel.speak_can_i_ask();
+}
+function speakPhrase() {
+    var textBox = document.getElementById("phrase-text-box");
+    var text = textBox.innerText; // Use .value for input box, .innerText or .textContent for div/span
+    eel.speak_text_with_vlc(text); // Call the Python function
+
+    textBox.innerText = '';
+}
+eel.expose(speakPhrase);
 /*
 --------------------------------------------------
-Config
+TV Control Functions
+--------------------------------------------------
+*/
+/*
+--------------------------------------------------
+*/
+/* Does nothing but when removed, user TV Remote 
+buttons click doesn't register to the Arduino */
+function powerOn() { 
+    //eel.powerOn() 
+   }
+/*
 --------------------------------------------------
 */
 
-function storeConfig(setting, value){
+// Function to send power on/off command
+function powerOnOff() {
+    console.log("power")
+    eel.powerOnOff();
+}
+// Function to send mute command
+function muteUnmute() {
+    console.log("mute")
+    eel.muteUnmute();
+}
+
+// Function to send volume up command
+function volumeUp(){
+    console.log("volume up")
+    eel.volumeUp();
+}
+
+// Function to send volume down command
+function volumeDown() {
+    console.log("volume down")
+    eel.volumeDown();
+}
+
+// Function to send channel up command
+function channelUp() {
+    console.log('channel up')
+    eel.channelUp();
+}
+
+// Function to send channel down command
+function channelDown() {
+    console.log('channel down')
+    eel.channelDown();
+}
+/*
+_________________________________________________________________________________________________
+                                MUSIC PLAYER CONTROL FUNCTIONS
+__________________________________________________________________________________________________
+*/
+function setMusicDirectory(directory) {
+    eel.set_music_directory(directory);
+}
+function playClassicalMusic() {
+    setMusicDirectory('classical'); // Set music directory to classical
+    playSong('/home/pi/ALS-Assistive-Tech/Music/Classical/Ave Maria (after J.S. Bach).mp3', 'Classical'); // Play the first song (replace with actual song name)
+}
+
+function playChristianMusic() {
+    setMusicDirectory('christian'); // Set music directory to christian
+    playSong('/home/pi/ALS-Assistive-Tech/Music/Christian/A Mighty Fortress Is Our God.mp3', 'Christian'); // Play the first song (replace with actual song name)
+}
+
+function playSong(filePath, genre) {
+    eel.play_song(filePath, genre); // filePath is the path to the song file
+}
+
+function pauseSong() {
+    eel.pause_song();
+}
+
+function stopSong() {
+    eel.stop_song();
+}
+
+function nextSong() {
+    eel.next_song(); // Function to play the next song
+}
+
+function previousSong() {
+    eel.previous_song(); // Function to play the previous song
+}
+// Update the song information displayed in the div boxes
+function updateSongInformation(songName, genre) {
+    document.getElementById("song-playing").innerText = "Now Playing: " + songName;
+    document.getElementById("genre").innerText = "Genre: " + genre;
+}
+eel.expose(updateSongInformation); // Expose the function to Eel
+
+/*
+______________________________________________________________________________________________________
+                                        SETTINGS PAGE CODE
+______________________________________________________________________________________________________
+*/
+function cycleTimeHalfSecond(){
+    cycleTime = 500;
+}
+function cycleTimeOneSecond(){
+    cycleTime = 1000;
+}
+function cycleTimeOneHalfSecond(){
+    cycleTime = 1500;
+}
+function cycleTimeTwoSecond(){
+    cycleTime = 2000;
+}
+function cycleTimeTwoHalfSecond(){
+    cycleTime = 2500;
+}
+function cycleTimeThreeSecond(){
+    cycleTime = 3000;
+}
+function cycleTimeThreeHalfSecond(){
+    cycleTime = 3500;
+}
+function cycleTimeFourSecond(){
+    cycleTime = 4000;
+}
+
+/*
+--------------------------------------------------
+                Config
+--------------------------------------------------
+*/
+
+function storeConfig(setting, value) {
     eel.storeConfig(setting, value)
 }
 
 eel.expose(loadConfig)
-function loadConfig(config){
+function loadConfig(config) {
 
     cycleTime = config.cycleTime
     charLimit = config.charLimit
@@ -575,23 +796,9 @@ function loadConfig(config){
     updateLabels()
 }
 
-var timeToSeconds = {
-    "500" : "&frac12; Second",
-    "1000": "1 Second",
-    "1500": "1 &frac12; Seconds",
-    "2000": "2 Seconds"
-}
-
-function updateLabels(){
-    for (var label in plugLabels){
+function updateLabels() {
+    for (var label in plugLabels) {
         document.getElementById("plug-" + label).innerHTML = plugLabels[label]
     }
     document.getElementById("speed-label").innerHTML = "Current Speed: " + timeToSeconds[cycleTime]
-}
-
-function setCycleTime(event, time){
-    if (event != undefined) event.stopPropagation()
-    storeConfig('cycleTime', time)
-    cycleTime = time
-    updateLabels()
 }
